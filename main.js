@@ -12,9 +12,27 @@ let config = require('./nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
 config.rootDir = __dirname // for electron-packager
 
+const malScraper = require('mal-scraper')
+const URL = require('url-parse');
+const querystring = require('querystring');
 // Init Nuxt.js
 const nuxt = new Nuxt(config)
-const server = http.createServer(nuxt.render)
+const route = (req,res) => {
+  const url = new URL(req.url);
+  if(url.pathname == '/malScraper.json'){
+    const query = querystring.parse(url.query.replace('?',''));
+    let seasonalInfo = malScraper.getSeason(query.year, query.season, () => {
+      console.log("Finished gathering information.")
+      res.writeHead(200, {"Content-Type": "application/json"});
+      res.write(JSON.stringify(seasonalInfo.info));
+      res.end();
+    });
+  }else{
+    return nuxt.render(req,res) ;
+  }
+};
+const server = http.createServer(route)
+//nuxt.render
 
 // Build only in dev mode
 if (config.dev) {
@@ -37,9 +55,14 @@ const electron = require('electron')
 const path = require('path')
 const url = require('url')
 
+// http.get('test', (res)=>{
+//   res.send('aaa');
+// });
+
 const POLL_INTERVAL = 300
 const pollServer = () => {
-  http.get(_NUXT_URL_, (res) => {
+  http
+  .get(_NUXT_URL_, (res) => {
     const SERVER_DOWN = res.statusCode !== 200
     SERVER_DOWN ? setTimeout(pollServer, POLL_INTERVAL) : win.loadURL(_NUXT_URL_)
   })

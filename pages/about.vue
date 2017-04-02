@@ -7,10 +7,6 @@
 
 <script>
 export default {
-  data ({ req }) {
-    return {
-      name: req ? 'server' : 'client'
-    }
-  }
+
 }
 </script>
