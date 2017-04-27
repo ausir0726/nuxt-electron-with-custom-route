@@ -10,7 +10,9 @@
     "dev": "cross-env NODE_ENV=development electron .",
     "build": "nuxt build",
     "start": "electron .",
-    "pack": "npm run build && electron-packager ./ --overwrite"
+    "pack": "npm run build && electron-packager ./ --overwrite",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "axios": "^0.16.0",
@@ -18,6 +20,8 @@
     "electron": "^1.4.15",
     "mal-scraper": "^1.2.2",
     "nuxt": "latest",
-    "url-parse": "^1.1.8"
-  }
+    "url-parse": "^1.1.8",
+    "snyk": "^1.29.0"
+  },
+  "snyk": true
 }
