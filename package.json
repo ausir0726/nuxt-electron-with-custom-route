@@ -20,7 +20,7 @@
     "electron": "^1.4.15",
     "mal-scraper": "^1.2.2",
     "nuxt": "latest",
-    "url-parse": "^1.1.8",
+    "url-parse": "^1.5.2",
     "snyk": "^1.29.0"
   },
   "snyk": true
